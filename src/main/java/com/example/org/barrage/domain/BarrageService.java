@@ -1,15 +1,19 @@
 package com.example.org.barrage.domain;
 
 import com.example.org.barrage.infrastructure.SlotCalculator;
+import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class BarrageService {
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     public void createBarrage(String activityId, Barrage barrage) {
         long currentStamp = System.currentTimeMillis();
@@ -33,10 +37,12 @@ public class BarrageService {
     }
 
     private Collection<Barrage> getBarrages(String slotKey) {
-        return new ArrayList<>();
+        return redissonClient.getSet(slotKey).stream()
+                .map(Barrage::format)
+                .collect(Collectors.toList());
     }
 
     private void saveToSlot(String slotKey, Barrage barrage) {
-
+        redissonClient.getSet(slotKey).tryAdd(barrage.toJson());
     }
 }
