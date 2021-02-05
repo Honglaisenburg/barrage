@@ -6,6 +6,9 @@ public class BarrageList {
     Long stamp;
     List<Barrage> data;
 
+    public BarrageList() {
+    }
+
     public Long getStamp() {
         return stamp;
     }
