@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,9 +25,14 @@ public class BarrageService {
 
     public BarrageList getBarrages(String activityId, Long lastStamp) {
         long currentStamp = System.currentTimeMillis();
-        List<Long> querySlots = SlotCalculator.calculateQuerySlots(lastStamp, currentStamp);
+        long validLastStamp = checkNull(lastStamp, currentStamp);
+        List<Long> querySlots = SlotCalculator.calculateQuerySlots(validLastStamp, currentStamp);
         List<Barrage> barrageList = queryBarrages(activityId, querySlots);
         return new BarrageList(currentStamp, barrageList);
+    }
+
+    private long checkNull(Long last, Long current) {
+        return Objects.isNull(last) ? current - 3000 : last;
     }
 
     private List<Barrage> queryBarrages(String activityId, List<Long> slots) {
