@@ -6,6 +6,7 @@ import com.example.org.barrage.domain.BarrageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/barrage")
 public class BarrageAPI {
