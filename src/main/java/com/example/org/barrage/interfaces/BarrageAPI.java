@@ -16,7 +16,7 @@ public class BarrageAPI {
 
     @PostMapping
     public void createBarrage(
-            @RequestParam(required = false, defaultValue = "testActivity") String activityId,
+            @RequestParam(value = "activityId", required = false, defaultValue = "testActivity") String activityId,
             @RequestBody Barrage barrage
     ) {
         barrageService.createBarrage(activityId, barrage);
@@ -24,7 +24,7 @@ public class BarrageAPI {
 
     @GetMapping
     public BarrageList getBarrages(
-            @RequestParam(required = false, defaultValue = "testActivity") String activityId,
+            @RequestParam(value = "activityId", required = false, defaultValue = "testActivity") String activityId,
             @RequestParam(value = "lastStamp", required = false) Long lastStamp
     ) {
         return barrageService.getBarrages(activityId, lastStamp);
